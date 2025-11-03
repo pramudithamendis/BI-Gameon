@@ -2,21 +2,18 @@ USE gaming_app_bi;
 --
 Create table _02AIMatches(
  id INT AUTO_INCREMENT PRIMARY KEY,
-    player_name VARCHAR(150) NOT NULL,
+    player_name VARCHAR(150),
     player_email VARCHAR(150) NOT NULL,
     total_ai_matches INT NOT NULL DEFAULT 0,
     player_wins INT NOT NULL DEFAULT 0,
     player_losses INT NOT NULL DEFAULT 0,
     spend_amount_usd DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    report_date DATE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    
-    INDEX idx_player (player_id),
-    INDEX idx_report_date (report_date)
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 --
-select * from users;
+drop table _02AIMatches
+select * from _02AIMatches;
 --
 SET @cutoff := '2025-08-26 18:30:00';
 
@@ -46,4 +43,4 @@ GROUP BY
 ORDER BY 
     spend_amount_usd DESC;
 --
-select * from users;
+select * from _02AIMatches;
