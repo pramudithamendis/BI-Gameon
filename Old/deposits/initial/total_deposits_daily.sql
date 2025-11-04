@@ -10,7 +10,7 @@ Create table total_deposits_daily(
 --
 select * from total_deposits_daily;
 --
-SET @cutoff := '2025-08-26 18:30:00';
+SET @cutoff := '2025-09-27 18:30:00';
 
 INSERT INTO total_deposits_daily (date, value)
 SELECT 
