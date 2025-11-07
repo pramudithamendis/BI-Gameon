@@ -23,13 +23,14 @@ FROM gaming_app_backend.`user`
 WHERE created_at > '2025-08-26 18:30:00';
 
 
-
+drop table users_monthly;
 CREATE TABLE users_monthly (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    period DATE NOT NULL,             -- first date of the month
+    period DATE NOT NULL unique,             -- first date of the month
     frequency ENUM('daily','weekly','monthly','yearly') NOT NULL,
     user_count INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 select * from users_monthly;
@@ -43,14 +44,16 @@ FROM gaming_app_backend.`user`
 WHERE created_at > '2025-08-26 18:30:00'
 GROUP BY YEAR(created_at), MONTH(created_at)
 ORDER BY period;
+select * from users_monthly;
 
-
+drop table users_weekly;
 CREATE TABLE users_weekly (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    period DATE NOT NULL,
+    period DATE NOT NULL unique,
     frequency ENUM('daily', 'weekly', 'monthly') NOT NULL DEFAULT 'weekly',
     user_count INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 select * from users_weekly;
@@ -64,15 +67,17 @@ FROM gaming_app_backend.`user`
 WHERE created_at > '2025-08-26 18:30:00'
 GROUP BY YEAR(created_at), WEEK(created_at)
 ORDER BY period;
+select * from users_weekly;
 
 
-
+drop table users_daily;
 CREATE TABLE users_daily (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    period DATE NOT NULL,
+    period DATE NOT NULL unique ,
     frequency ENUM('daily', 'weekly', 'monthly') NOT NULL DEFAULT 'daily',
     user_count INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 select * from users_daily;
@@ -86,3 +91,4 @@ FROM gaming_app_backend.`user`
 WHERE created_at > '2025-08-26 18:30:00'
 GROUP BY DATE(created_at)
 ORDER BY period;
+select * from users_daily;

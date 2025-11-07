@@ -4,21 +4,21 @@ select * from users_total;
 USE gaming_app_bi;
 
 -- Get yesterday's date in Singapore timezone (YYYY-MM-DD only)
-SET @yesterday_date := DATE(CONVERT_TZ(DATE_SUB(NOW(), INTERVAL 1 DAY), '+00:00', '+08:00'));
+-- SET @yesterday_date := DATE(CONVERT_TZ(DATE_SUB(NOW(), INTERVAL 1 DAY), '+00:00', '+08:00'));
 
-INSERT INTO users_total (metrics, data_type, f_list, value_list, metric_date, created_at)
-SELECT
-    'total_users' AS metrics,
-    'card' AS data_type,
-    JSON_ARRAY('total_users') AS f_list,
-    JSON_OBJECT('total_users', COUNT(*)) AS value_list,
-    @yesterday_date AS metric_date,
-    NOW() AS created_at
-FROM gaming_app_backend.`user`
-WHERE DATE(CONVERT_TZ(created_at, '+00:00', '+08:00')) = @yesterday_date
-ON DUPLICATE KEY UPDATE
-    value_list = VALUES(value_list),
-    updated_at = CURRENT_TIMESTAMP;
+-- INSERT INTO users_total (metrics, data_type, f_list, value_list, metric_date, created_at)
+-- SELECT
+--     'total_users' AS metrics,
+--     'card' AS data_type,
+--     JSON_ARRAY('total_users') AS f_list,
+--     JSON_OBJECT('total_users', COUNT(*)) AS value_list,
+--     @yesterday_date AS metric_date,
+--     NOW() AS created_at
+-- FROM gaming_app_backend.`user`
+-- WHERE DATE(CONVERT_TZ(created_at, '+00:00', '+08:00')) = @yesterday_date
+-- ON DUPLICATE KEY UPDATE
+--     value_list = VALUES(value_list),
+--     updated_at = CURRENT_TIMESTAMP;
 
 
 
@@ -42,7 +42,7 @@ GROUP BY period
 ON DUPLICATE KEY UPDATE
     user_count = VALUES(user_count),
     updated_at = CURRENT_TIMESTAMP;
-
+select * from users_monthly;
 
 
 
@@ -69,7 +69,7 @@ WHERE DATE(CONVERT_TZ(created_at, '+00:00', '+08:00')) BETWEEN @last_week_start 
 ON DUPLICATE KEY UPDATE
     user_count = VALUES(user_count),
     updated_at = CURRENT_TIMESTAMP;
-
+select * from users_weekly;
 
 
 select * from users_daily;
@@ -90,3 +90,4 @@ GROUP BY period
 ON DUPLICATE KEY UPDATE
     user_count = VALUES(user_count),
     updated_at = CURRENT_TIMESTAMP;
+select * from users_daily;

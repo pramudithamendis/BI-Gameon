@@ -30,9 +30,10 @@ WHERE COALESCE(pc.is_active,1) = 1
   
   
   
+  drop table TotalGamePlayCommissions_monthly;
   CREATE TABLE TotalGamePlayCommissions_monthly (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    month_ CHAR(7) NOT NULL,  -- Format: YYYY-MM
+    month_ CHAR(7) NOT NULL unique,  -- Format: YYYY-MM
     base_amount_100pct DECIMAL(18,2) NOT NULL,
     developer_share_50pct DECIMAL(18,2) NOT NULL,
     tax_18pct DECIMAL(18,2) NOT NULL,
@@ -58,12 +59,14 @@ WHERE COALESCE(pc.is_active,1) = 1
   AND gs.created_at >= '2025-09-27'
 GROUP BY DATE_FORMAT(gs.created_at, '%Y-%m')
 ORDER BY DATE_FORMAT(gs.created_at, '%Y-%m') DESC;
+select * from TotalGamePlayCommissions_monthly;
 
 
+drop table TotalGamePlayCommissions_weekly;
 CREATE TABLE TotalGamePlayCommissions_weekly (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 
-    year_week INT NOT NULL,                         -- e.g. 202540 (ISO week format)
+    year_week INT NOT NULL unique,                         -- e.g. 202540 (ISO week format)
     week_start_date DATE NOT NULL,                  -- Monday of the week
     week_end_date DATE NOT NULL,                    -- Sunday of the week
 
@@ -95,11 +98,13 @@ WHERE COALESCE(pc.is_active,1) = 1
   AND gs.created_at >= '2025-09-27'
 GROUP BY YEARWEEK(gs.created_at, 1)
 ORDER BY YEARWEEK(gs.created_at, 1) DESC;
+select * from TotalGamePlayCommissions_weekly;
 
 
+drop table TotalGamePlayCommissions_daily;
 CREATE TABLE TotalGamePlayCommissions_daily (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    date_ DATE NOT NULL,
+    date_ DATE NOT NULL unique,
     base_amount_100pct DECIMAL(18, 4) NOT NULL DEFAULT 0,
     developer_share_50pct DECIMAL(18, 4) NOT NULL DEFAULT 0,
     tax_18pct DECIMAL(18, 4) NOT NULL DEFAULT 0,
@@ -125,3 +130,5 @@ WHERE COALESCE(pc.is_active,1) = 1
   AND gs.created_at >= '2025-09-27'
 GROUP BY DATE(gs.created_at)
 ORDER BY DATE(gs.created_at) DESC;
+
+select * from TotalGamePlayCommissions_daily;
