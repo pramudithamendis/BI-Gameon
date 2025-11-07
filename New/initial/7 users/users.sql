@@ -1,3 +1,5 @@
+drop table users_total;
+
 CREATE TABLE users_total (
     id BIGINT NOT NULL AUTO_INCREMENT,
     metrics VARCHAR(100) NOT NULL,          -- e.g., 'total_users'
@@ -21,7 +23,7 @@ SELECT
     NOW() AS created_at
 FROM gaming_app_backend.`user`
 WHERE created_at > '2025-08-26 18:30:00';
-
+select * from users_total;
 
 drop table users_monthly;
 CREATE TABLE users_monthly (

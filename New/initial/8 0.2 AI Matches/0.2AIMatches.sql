@@ -36,12 +36,13 @@ JOIN gaming_app_backend.user u_opponent
     ON u_opponent.id = ugo.user
 WHERE 
     gs.created_at >= '2025-10-15'
-    AND u_player.id NOT IN (1109,1110,1111,1112,1113)   
-    AND u_opponent.id IN (1109,1110,1111,1112,1113)     
+    AND u_player.id NOT IN (1109,1110,1111,1112,1113,1164,1165,1166,1167,1168,1169)   
+    AND u_opponent.id IN (1109,1110,1111,1112,1113,1164,1165,1166,1167,1168,1169)     
 GROUP BY 
     u_player.id
 ORDER BY 
     spend_amount_usd DESC;
+select * from _02AiMatches;
 
 drop table _02AiMatches_monthly;
 
@@ -88,8 +89,8 @@ JOIN gaming_app_backend.user_game_session ugo
 JOIN gaming_app_backend.user u_opponent 
     ON u_opponent.id = ugo.user
 WHERE 
-    u_player.id NOT IN (1109,1110,1111,1112,1113)
-    AND u_opponent.id IN (1109,1110,1111,1112,1113)
+    u_player.id NOT IN (1109,1110,1111,1112,1113,1164,1165,1166,1167,1168,1169)
+    AND u_opponent.id IN (1109,1110,1111,1112,1113,1164,1165,1166,1167,1168,1169)
 GROUP BY 
     month_, 
     u_player.id
@@ -138,8 +139,8 @@ JOIN gaming_app_backend.user_game_session ugo
 JOIN gaming_app_backend.user u_opponent 
     ON u_opponent.id = ugo.user
 WHERE 
-    u_player.id NOT IN (1109,1110,1111,1112,1113)
-    AND u_opponent.id IN (1109,1110,1111,1112,1113)
+    u_player.id NOT IN (1109,1110,1111,1112,1113,1164,1165,1166,1167,1168,1169)
+    AND u_opponent.id IN (1109,1110,1111,1112,1113,1164,1165,1166,1167,1168,1169)
 GROUP BY 
     week_label, 
     u_player.id
@@ -187,8 +188,8 @@ JOIN gaming_app_backend.user_game_session ugo
 JOIN gaming_app_backend.user u_opponent 
     ON u_opponent.id = ugo.user
 WHERE 
-    u_player.id NOT IN (1109,1110,1111,1112,1113)
-    AND u_opponent.id IN (1109,1110,1111,1112,1113)
+    u_player.id NOT IN (1109,1110,1111,1112,1113,1164,1165,1166,1167,1168,1169)
+    AND u_opponent.id IN (1109,1110,1111,1112,1113,1164,1165,1166,1167,1168,1169)
 GROUP BY 
     date_, 
     u_player.id

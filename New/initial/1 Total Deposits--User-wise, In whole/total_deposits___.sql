@@ -11,8 +11,8 @@ CREATE TABLE total_deposits_daily (
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-
 select * from total_deposits_daily;
+
 SET @cutoff := '2025-09-27 18:30:00';
 insert into total_deposits_daily(date_,total_completed_amount, total_transactions)
 SELECT 
