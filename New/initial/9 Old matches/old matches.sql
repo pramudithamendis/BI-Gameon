@@ -1,4 +1,3 @@
-
 CREATE TABLE oldmatches (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     total_ai_matches INT NOT NULL DEFAULT 0,
@@ -29,17 +28,18 @@ WHERE
     gs.game_session_mode = 5
     AND DATE(gs.created_at) BETWEEN '2025-10-07' AND '2025-10-16';
     
-    
+drop table oldmatches_monthly;
 CREATE TABLE oldmatches_monthly (
 id BIGINT AUTO_INCREMENT PRIMARY KEY,
 year_ INT NOT NULL,
-month_number INT NOT NULL,
+month_number INT NOT NULL unique,
 month_name VARCHAR(20) NOT NULL,
 total_ai_matches INT NOT NULL DEFAULT 0,
 total_player_wins INT NOT NULL DEFAULT 0,
 total_player_losses INT NOT NULL DEFAULT 0,
 total_spent_in_usd DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 select * from oldmatches_monthly;
@@ -71,18 +71,19 @@ GROUP BY
     year_, month_number
 ORDER BY 
     year_, month_number;
+select * from oldmatches_monthly;
 
-
+drop table oldmatches_weekly;
 CREATE TABLE oldmatches_weekly (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     year_ INT NOT NULL,
-    week_number INT NOT NULL,
+    week_number INT NOT NULL unique,
     total_ai_matches INT DEFAULT 0,
     total_player_wins INT DEFAULT 0,
     total_player_losses INT DEFAULT 0,
     total_spent_in_usd DECIMAL(12,2) DEFAULT 0,       
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 drop table oldmatches_weekly;
@@ -110,7 +111,10 @@ GROUP BY
     year_, week_number
 ORDER BY 
     year_, week_number;
+select * from oldmatches_weekly;
 
+
+drop table oldmatches_daily;
 CREATE TABLE oldmatches_daily (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     
@@ -147,3 +151,4 @@ GROUP BY
     match_date
 ORDER BY 
     match_date ASC;
+select * from oldmatches_daily;
