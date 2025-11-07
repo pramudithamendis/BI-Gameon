@@ -17,11 +17,13 @@ JOIN gaming_app_backend.user_game_session ugs
 ON gs.id = ugs.game_session
 where gs.created_at >= @cutoff;
 
+drop table total_game_plays_monthly;
 CREATE TABLE total_game_plays_monthly (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    month_ VARCHAR(7) NOT NULL,   -- format: YYYY-MM
+    month_ VARCHAR(7) NOT NULL unique,   -- format: YYYY-MM
     total_sessions INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 
@@ -38,16 +40,17 @@ JOIN gaming_app_backend.user_game_session ugs
 WHERE gs.created_at >= @cutoff
 GROUP BY DATE_FORMAT(gs.created_at, '%Y-%m')
 ORDER BY month_;
+select * from total_game_plays_monthly;
 
 
-
-
+drop table total_game_plays_weekly;
 CREATE TABLE total_game_plays_weekly (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    week_start DATE NOT NULL,
+    week_start DATE NOT NULL unique,
     week_end DATE NOT NULL,
     total_sessions INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 select * from total_game_plays_weekly;
 
@@ -62,12 +65,15 @@ JOIN gaming_app_backend.user_game_session ugs
     ON gs.id = ugs.game_session
 WHERE YEARWEEK(gs.created_at, 1) = YEARWEEK(CURDATE(), 1)
 and gs.created_at >= @cutoff;
+select * from total_game_plays_weekly;
 
 
+drop table total_game_plays_daily;
 CREATE TABLE total_game_plays_daily(
-    date_ DATE NOT NULL PRIMARY KEY,
+    date_ DATE NOT NULL PRIMARY KEY unique,
     total_sessions INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 select * from total_game_plays_daily;
@@ -82,4 +88,5 @@ JOIN gaming_app_backend.user_game_session ugs
 WHERE DATE(gs.created_at) = CURDATE()
 GROUP BY DATE(gs.created_at)
 ORDER BY DATE(gs.created_at);
+select * from total_game_plays_daily;
 

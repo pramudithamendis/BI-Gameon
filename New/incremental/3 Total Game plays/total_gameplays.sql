@@ -65,6 +65,7 @@ WHERE YEARWEEK(CONVERT_TZ(gs.created_at, '+00:00', '+08:00'), 1) = @last_week
 ON DUPLICATE KEY UPDATE
     total_sessions = VALUES(total_sessions),
     updated_at = CURRENT_TIMESTAMP;
+select * from total_game_plays_weekly;
 
 
 select * from total_game_plays_daily;
@@ -86,5 +87,6 @@ GROUP BY date_
 ON DUPLICATE KEY UPDATE 
     total_sessions = VALUES(total_sessions),
     updated_at = CURRENT_TIMESTAMP;
+select * from total_game_plays_daily;
 
 
