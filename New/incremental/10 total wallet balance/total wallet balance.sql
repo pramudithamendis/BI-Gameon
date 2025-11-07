@@ -151,3 +151,4 @@ ON DUPLICATE KEY UPDATE
     available_balance = VALUES(available_balance),
     updated_at = CURRENT_TIMESTAMP;
 
+ 
