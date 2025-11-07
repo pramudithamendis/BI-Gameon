@@ -1,6 +1,5 @@
 -- Total withdrawals --
 
-
 select * from total_withdrawals_daily;
 
 USE gaming_app_bi;
@@ -26,6 +25,7 @@ ON DUPLICATE KEY UPDATE
     total_withdrawal_usd = VALUES(total_withdrawal_usd),
     total_withdrawal_lkr = VALUES(total_withdrawal_lkr),
     updated_at = CURRENT_TIMESTAMP;
+select * from total_withdrawals_daily;
 
 
 select * from total_withdrawals_weekly;
@@ -93,32 +93,33 @@ ON DUPLICATE KEY UPDATE
     total_withdrawal_usd = VALUES(total_withdrawal_usd),
     total_withdrawal_lkr = VALUES(total_withdrawal_lkr),
     updated_at = CURRENT_TIMESTAMP;
+select * from total_withdrawals_monthly;
 
 
 drop table total_withdrawals_total;
 
 select * from total_withdrawals_total;
 
-USE gaming_app_bi;
+-- USE gaming_app_bi;
 
--- Get yesterday's date in Singapore timezone (+08:00)
-SET @yesterday := DATE(CONVERT_TZ(DATE_SUB(NOW(), INTERVAL 1 DAY), '+00:00', '+08:00'));
+-- -- Get yesterday's date in Singapore timezone (+08:00)
+-- SET @yesterday := DATE(CONVERT_TZ(DATE_SUB(NOW(), INTERVAL 1 DAY), '+00:00', '+08:00'));
 
-INSERT INTO total_withdrawals_total (date, total_withdrawal_usd, total_withdrawal_lkr)
-SELECT 
-    @yesterday AS date,
-    SUM(w.withdrawal_amount) AS total_withdrawal_usd,
-    SUM(w.amount_lkr) AS total_withdrawal_lkr
-FROM gaming_app_backend.user u
-JOIN gaming_app_backend.user_withdrawals w 
-    ON w.user_id = u.id
-WHERE w.is_active = 1
-  AND w.status = 'Approved'
-  AND u.email NOT LIKE '%@gameonworld.ai%'
-  AND w.amount_lkr IS NOT NULL
-  AND DATE(CONVERT_TZ(w.created_at, '+00:00', '+08:00')) = @yesterday
-ON DUPLICATE KEY UPDATE 
-    total_withdrawal_usd = VALUES(total_withdrawal_usd),
-    total_withdrawal_lkr = VALUES(total_withdrawal_lkr),
-    updated_at = CURRENT_TIMESTAMP;
+-- INSERT INTO total_withdrawals_total (date, total_withdrawal_usd, total_withdrawal_lkr)
+-- SELECT 
+--     @yesterday AS date,
+--     SUM(w.withdrawal_amount) AS total_withdrawal_usd,
+--     SUM(w.amount_lkr) AS total_withdrawal_lkr
+-- FROM gaming_app_backend.user u
+-- JOIN gaming_app_backend.user_withdrawals w 
+--     ON w.user_id = u.id
+-- WHERE w.is_active = 1
+--   AND w.status = 'Approved'
+--   AND u.email NOT LIKE '%@gameonworld.ai%'
+--   AND w.amount_lkr IS NOT NULL
+--   AND DATE(CONVERT_TZ(w.created_at, '+00:00', '+08:00')) = @yesterday
+-- ON DUPLICATE KEY UPDATE 
+--     total_withdrawal_usd = VALUES(total_withdrawal_usd),
+--     total_withdrawal_lkr = VALUES(total_withdrawal_lkr),
+--     updated_at = CURRENT_TIMESTAMP;
 
