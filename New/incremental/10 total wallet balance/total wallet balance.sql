@@ -62,6 +62,7 @@ ON DUPLICATE KEY UPDATE
     total_hold = VALUES(total_hold),
     available_balance = VALUES(available_balance),
     updated_at = CURRENT_TIMESTAMP;
+select * from wallet_balance_monthly;
 
 
 drop table wallet_balance_weekly;
@@ -103,6 +104,7 @@ ON DUPLICATE KEY UPDATE
     total_hold        = VALUES(total_hold),
     available_balance = VALUES(available_balance),
     updated_at        = CURRENT_TIMESTAMP;
+select * from wallet_balance_weekly;
 
 drop table wallet_balance_daily;
 select * from wallet_balance_daily;
@@ -150,5 +152,6 @@ ON DUPLICATE KEY UPDATE
     total_hold = VALUES(total_hold),
     available_balance = VALUES(available_balance),
     updated_at = CURRENT_TIMESTAMP;
+select * from wallet_balance_daily;
 
  

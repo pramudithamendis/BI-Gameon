@@ -1,3 +1,4 @@
+
 CREATE TABLE wallet_balance(
     id BIGINT NOT NULL,
     email VARCHAR(255) NOT NULL,
@@ -30,6 +31,7 @@ GROUP BY u.id, u.email, u.total_coins
 ORDER BY available_balance DESC;
 
 
+drop table wallet_balance_monthly;
 CREATE TABLE wallet_balance_monthly (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id                BIGINT NOT NULL,
@@ -41,7 +43,8 @@ CREATE TABLE wallet_balance_monthly (
     total_hold             DECIMAL(18,2) NOT NULL,       -- SUM(uca.coins)
     available_balance      DECIMAL(18,2) NOT NULL,       -- total_balance - total_hold
     created_at             TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at             TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updated_at             TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    unique key user_id_month(user_id,month_)
  );
 
 drop table wallet_balance_monthly;
@@ -73,8 +76,10 @@ GROUP BY
 ORDER BY 
     month_ DESC,
     available_balance DESC;
-    
+select * from wallet_balance_monthly;
 
+
+drop table wallet_balance_weekly;
 CREATE TABLE wallet_balance_weekly (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id BIGINT NOT NULL,
@@ -88,9 +93,10 @@ CREATE TABLE wallet_balance_weekly (
     total_hold DECIMAL(18,2) NOT NULL,       -- SUM(uca.coins)
     available_balance DECIMAL(18,2) NOT NULL,-- total_balance - total_hold
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    unique key user_id_month(user_id,week_label)
 );
+
 drop table wallet_balance_weekly;
 select * from wallet_balance_weekly;
 insert into wallet_balance_weekly(user_id,email,first_name,last_name,year_,week_number,week_label,total_balance,total_hold,available_balance)
@@ -125,8 +131,10 @@ ORDER BY
     year_ DESC,
     week_number DESC,
     available_balance DESC;
+select * from wallet_balance_weekly;
 
 
+drop table wallet_balance_daily;
 CREATE TABLE wallet_balance_daily (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
 
@@ -142,7 +150,8 @@ CREATE TABLE wallet_balance_daily (
     available_balance DECIMAL(18,2) NOT NULL DEFAULT 0,
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    unique key user_id_month(user_id,date_)
 );
 
 drop table wallet_balance_daily;
@@ -174,3 +183,4 @@ GROUP BY
 ORDER BY 
     date_ DESC,
     available_balance DESC;
+select * from wallet_balance_daily;
