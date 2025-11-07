@@ -20,6 +20,7 @@ ON DUPLICATE KEY UPDATE
     total_transactions = VALUES(total_transactions),
     updated_at = CURRENT_TIMESTAMP;
 
+select * from total_deposits_daily;
 
 USE gaming_app_bi;
 
@@ -39,7 +40,7 @@ SELECT
     MAX(DATE(CONVERT_TZ(w.created_at, '+00:00', '+08:00'))) AS week_end_date,
     SUM(w.actual_amount) AS total_completed_amount,
     COUNT(*) AS total_transactions
-FROM gaming_oapp_backend.webx_pay w
+FROM gaming_app_backend.webx_pay w
 JOIN gaming_app_backend.user u ON w.user = u.id
 WHERE w.status IN ('Completed', 'Success')
   AND YEARWEEK(CONVERT_TZ(w.created_at, '+00:00', '+08:00'), 1) = @last_week_yearweek
@@ -49,7 +50,7 @@ ON DUPLICATE KEY UPDATE
     total_completed_amount = VALUES(total_completed_amount),
     total_transactions = VALUES(total_transactions),
     updated_at = CURRENT_TIMESTAMP;
-
+select * from total_deposits_weekly;
 
 
 select * from total_deposits_monthly;
@@ -73,25 +74,28 @@ ON DUPLICATE KEY UPDATE
     total_completed_amount = VALUES(total_completed_amount),
     total_transactions     = VALUES(total_transactions),
     updated_at             = CURRENT_TIMESTAMP;
+select * from total_deposits_monthly; 
 
 
 select * from total_deposits_total;
 
 USE gaming_app_bi;
 
--- Get yesterday's date in Singapore timezone (+08:00)
-SET @yesterday := DATE(CONVERT_TZ(DATE_SUB(NOW(), INTERVAL 1 DAY), '+00:00', '+08:00'));
+-- No incremental version for total_deposits_total
 
-INSERT INTO total_deposits_total (date, total_completed_amount, total_transactions)
-SELECT
-    @yesterday AS date,
-    SUM(w.actual_amount) AS total_completed_amount,
-    COUNT(*) AS total_transactions
-FROM gaming_app_backend.webx_pay w
-JOIN gaming_app_backend.user u ON w.user = u.id
-WHERE w.status IN ('Completed', 'Success')
-  AND DATE(CONVERT_TZ(w.created_at, '+00:00', '+08:00')) = @yesterday
-ON DUPLICATE KEY UPDATE
-    total_completed_amount = VALUES(total_completed_amount),
-    total_transactions = VALUES(total_transactions),
-    updated_at = CURRENT_TIMESTAMP;
+-- Get yesterday's date in Singapore timezone (+08:00)
+-- SET @yesterday := DATE(CONVERT_TZ(DATE_SUB(NOW(), INTERVAL 1 DAY), '+00:00', '+08:00'));
+-- 
+-- INSERT INTO total_deposits_total (total_completed_amount, total_transactions)
+-- SELECT
+--     SUM(w.actual_amount) AS total_completed_amount,
+--     COUNT(*) AS total_transactions
+-- FROM gaming_app_backend.webx_pay w
+-- JOIN gaming_app_backend.user u ON w.user = u.id
+-- WHERE w.status IN ('Completed', 'Success')
+--   AND DATE(CONVERT_TZ(w.created_at, '+00:00', '+08:00')) = @yesterday
+-- ON DUPLICATE KEY UPDATE
+--     total_completed_amount = VALUES(total_completed_amount),
+--     total_transactions = VALUES(total_transactions),
+--     updated_at = CURRENT_TIMESTAMP;
+-- select * from total_deposits_total;
