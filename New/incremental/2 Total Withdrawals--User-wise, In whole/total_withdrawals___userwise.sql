@@ -33,6 +33,8 @@ ON DUPLICATE KEY UPDATE
     total_amount_lkr = VALUES(total_amount_lkr),
     total_transactions = VALUES(total_transactions),
     updated_at = CURRENT_TIMESTAMP;
+select * from total_withdrawals_daily_userwise;
+
 
 select * from total_withdrawals_weekly_userwise;
 
@@ -45,6 +47,7 @@ SET @last_week := CONCAT(
     '-W',
     LPAD(WEEK(CONVERT_TZ(NOW(), '+00:00', '+08:00') - INTERVAL 1 WEEK, 1), 2, '0')
 );
+
 
 INSERT INTO total_withdrawals_weekly_userwise
     (week_label, user_id, username, total_withdrawal_amount, total_amount_lkr, total_transactions)
@@ -73,7 +76,7 @@ ON DUPLICATE KEY UPDATE
     total_amount_lkr = VALUES(total_amount_lkr),
     total_transactions = VALUES(total_transactions),
     updated_at = CURRENT_TIMESTAMP;
-
+select * from total_withdrawals_weekly_userwise;
 
 
 USE gaming_app_bi;
@@ -118,6 +121,7 @@ ON DUPLICATE KEY UPDATE
     total_amount_lkr = VALUES(total_amount_lkr),
     total_transactions = VALUES(total_transactions),
     updated_at = CURRENT_TIMESTAMP;
+select * from total_withdrawals_monthly_userwise;
 
 
 select * from total_withdrawals_monthly_userwise;
