@@ -67,7 +67,7 @@ CREATE TABLE total_withdrawals_both_monthly (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-
+select * from total_withdrawals_both_monthly;
 SET @cutoff := '2025-09-27 18:30:00';
 insert into total_withdrawals_both_monthly(month_,total_completed_amount,total_transactions)
 SELECT 
